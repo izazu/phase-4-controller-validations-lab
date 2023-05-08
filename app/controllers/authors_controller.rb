@@ -7,11 +7,15 @@ class AuthorsController < ApplicationController
   end
 
   def create
-    author = Author.create(author_params)
-
-    render json: author, status: :created
+    author = Author.new(author_params)
+  
+    if author.save
+      render json: author, status: :created
+    else
+      render json: { errors: author.errors.to_hash }, status: :unprocessable_entity
+    end
   end
-
+  
   private
   
   def author_params
